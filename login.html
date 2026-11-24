@@ -20,5 +20,5 @@ a{color:var(--green);text-decoration:none}.wrap{width:min(440px,100%)}.brand{tex
 <div class="credit">MADE BY HALCYON_011 · @halcyon_011</div>
 </main>
 <script>
-document.getElementById('loginForm').addEventListener('submit',function(e){e.preventDefault();const name=document.getElementById('name').value.trim();const email=document.getElementById('email').value.trim();if(!name||!email)return;sessionStorage.setItem('venomPreviewName',name);location.href='clipping.html';});
+document.getElementById('loginForm').addEventListener('submit',function(e){e.preventDefault();const name=document.getElementById('name').value.trim();const email=document.getElementById('email').value.trim();if(!name||!email)return;sessionStorage.setItem('venomPreviewName',name);sessionStorage.setItem('venomPreviewEmail',email);location.href='clipping.html';});
 </script></body></html>
