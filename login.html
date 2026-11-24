@@ -6,19 +6,55 @@
 <style>
 :root{color-scheme:dark;--bg:#050807;--panel:#0b1410;--green:#39ff88;--muted:#9aa9a0}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#123322 0%,#050807 52%);color:#f4fff8;font-family:Arial,Helvetica,sans-serif;display:grid;place-items:center;padding:22px}
-a{color:var(--green);text-decoration:none}.wrap{width:min(440px,100%)}.brand{text-align:center;margin-bottom:24px}.mark{width:64px;height:64px;border:1px solid #39ff8870;border-radius:18px;display:grid;place-items:center;margin:auto auto 14px;color:var(--green);font-size:30px;font-weight:900;box-shadow:0 0 30px #39ff8822}.brand small{letter-spacing:4px;color:var(--green);font-weight:bold}.card{background:#0b1410eF;border:1px solid #39ff8840;border-radius:22px;padding:30px;box-shadow:0 20px 70px #0009}.card h1{margin:0 0 8px;font-size:30px}.muted{color:var(--muted);line-height:1.6;font-size:14px}.field{display:block;margin:22px 0 7px;font-size:13px;color:#c9d8cf}input{width:100%;padding:14px 15px;border:1px solid #294536;background:#07100b;border-radius:10px;color:white;font-size:15px;outline:none}input:focus{border-color:var(--green)}button{width:100%;padding:15px;border:0;border-radius:10px;background:var(--green);color:#041009;font-size:15px;font-weight:900;cursor:pointer;margin-top:16px}button:hover{filter:brightness(1.08)}.secondary{background:#101b15;color:#eafff1;border:1px solid #345340}.notice{font-size:12px;color:#9aa9a0;background:#101b15;padding:12px;border-radius:10px;margin-top:18px;line-height:1.5}.back{text-align:center;margin-top:22px;font-size:13px}.credit{text-align:center;color:#718178;font-size:11px;letter-spacing:2px;margin-top:22px}
+a{color:var(--green);text-decoration:none}.wrap{width:min(440px,100%)}.brand{text-align:center;margin-bottom:24px}.mark{width:64px;height:64px;border:1px solid #39ff8870;border-radius:18px;display:grid;place-items:center;margin:auto auto 14px;color:var(--green);font-size:30px;font-weight:900;box-shadow:0 0 30px #39ff8822}.brand small{letter-spacing:4px;color:var(--green);font-weight:bold}.card{background:#0b1410eF;border:1px solid #39ff8840;border-radius:22px;padding:30px;box-shadow:0 20px 70px #0009}.card h1{margin:0 0 8px;font-size:30px}.muted{color:var(--muted);line-height:1.6;font-size:14px}.field{display:block;margin:22px 0 7px;font-size:13px;color:#c9d8cf}input{width:100%;padding:14px 15px;border:1px solid #294536;background:#07100b;border-radius:10px;color:white;font-size:15px;outline:none}input:focus{border-color:var(--green)}button{width:100%;padding:15px;border:0;border-radius:10px;background:var(--green);color:#041009;font-size:15px;font-weight:900;cursor:pointer;margin-top:16px}button:hover{filter:brightness(1.08)}.secondary{background:#101b15;color:#eafff1;border:1px solid #345340}.notice{font-size:12px;color:#9aa9a0;background:#101b15;padding:12px;border-radius:10px;margin-top:18px;line-height:1.5}.back{text-align:center;margin-top:22px;font-size:13px}.credit{text-align:center;color:#718178;font-size:11px;letter-spacing:2px;margin-top:22px}.divider{display:flex;align-items:center;gap:10px;color:#718178;font-size:11px;margin-top:16px}.divider:before,.divider:after{content:"";height:1px;background:#294536;flex:1}button:disabled{opacity:.65;cursor:wait}
 </style></head>
 <body><main class="wrap">
 <div class="brand"><div class="mark">V</div><small>VENOM 2</small></div>
-<section class="card"><h1>Welcome back</h1><p class="muted">Sign-in screen for your creator workspace.</p>
+<section class="card"><h1>Welcome back</h1><p class="muted">Sign in to your creator workspace.</p>
 <form id="loginForm"><label class="field" for="name">Your name</label><input id="name" name="name" autocomplete="name" placeholder="Enter your name" required>
 <label class="field" for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
 <button type="submit">CONTINUE TO CLIPPING</button></form>
-<button class="secondary" type="button" id="google" disabled>GOOGLE SIGN-IN — SETUP PENDING</button>
-<div class="notice">This is currently a front-end preview. Accounts and Google authentication are not active yet; do not enter a password here.</div>
+<div class="divider">OR</div>
+<button class="secondary" type="button" id="google">CONTINUE WITH GOOGLE</button>
+<div class="notice" id="authNotice">Google sign-in is connected to Firebase. If sign-in is blocked, enable Google in Firebase Authentication and add your GitHub Pages domain to Authorized domains.</div>
 <div class="back"><a href="index.html">← Back to home</a></div></section>
 <div class="credit">MADE BY HALCYON_011 · @halcyon_011</div>
 </main>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCWCJZFunXdRnlm4bLq2ej5UzP6lQbiH10",
+  authDomain: "venom2-7c8b1.firebaseapp.com",
+  projectId: "venom2-7c8b1",
+  storageBucket: "venom2-7c8b1.firebasestorage.app",
+  messagingSenderId: "535035712374",
+  appId: "1:535035712374:web:977d9f01d956b745ce6057",
+  measurementId: "G-PR8943TTZ3"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 document.getElementById('loginForm').addEventListener('submit',function(e){e.preventDefault();const name=document.getElementById('name').value.trim();const email=document.getElementById('email').value.trim();if(!name||!email)return;sessionStorage.setItem('venomPreviewName',name);sessionStorage.setItem('venomPreviewEmail',email);location.href='dashboard.html';});
+document.getElementById('google').addEventListener('click',async function(){
+ const button=this, notice=document.getElementById('authNotice');
+ button.disabled=true;button.textContent='CONNECTING TO GOOGLE…';notice.textContent='Opening Google sign-in…';
+ try{
+  const provider=new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({prompt:'select_account'});
+  const result=await auth.signInWithPopup(provider);
+  const user=result.user;
+  sessionStorage.setItem('venomPreviewName',user.displayName||'Creator');
+  sessionStorage.setItem('venomPreviewEmail',user.email||'');
+  location.href='dashboard.html';
+ }catch(error){
+  console.error('Firebase Google sign-in:',error);
+  const messages={
+   'auth/operation-not-allowed':'Google provider is not enabled yet. Enable it in Firebase Authentication → Sign-in method → Google.',
+   'auth/unauthorized-domain':'Add ankitkumargamer12309-ai.github.io in Firebase Authentication → Settings → Authorized domains.',
+   'auth/popup-blocked':'Your browser blocked the sign-in popup. Allow popups for this site and try again.',
+   'auth/popup-closed-by-user':'The Google sign-in window was closed before finishing.'
+  };
+  notice.textContent=messages[error.code]||('Google sign-in could not start: '+(error.message||error.code));
+ }finally{button.disabled=false;button.textContent='CONTINUE WITH GOOGLE';}
+});
 </script></body></html>
