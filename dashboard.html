@@ -81,7 +81,10 @@ button,input{font:inherit}a{color:inherit;text-decoration:none}
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script>
 const firebaseConfig={apiKey:"AIzaSyCWCJZFunXdRnlm4bLq2ej5UzP6lQbiH10",authDomain:"venom2-7c8b1.firebaseapp.com",projectId:"venom2-7c8b1",storageBucket:"venom2-7c8b1.firebasestorage.app",messagingSenderId:"535035712374",appId:"1:535035712374:web:977d9f01d956b745ce6057",measurementId:"G-PR8943TTZ3"};firebase.initializeApp(firebaseConfig);const auth=firebase.auth();
-auth.onAuthStateChanged(user=>{if(!user){location.replace('login.html');return;}document.body.style.visibility='visible';const displayName=user.displayName||'Creator';sessionStorage.setItem('venomPreviewName',displayName);sessionStorage.setItem('venomPreviewEmail',user.email||'');});
+auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(()=>{});
+let venomAuthVerified=false;
+auth.onAuthStateChanged(user=>{if(!user){location.replace('login.html');return;}venomAuthVerified=true;document.body.style.visibility='visible';const displayName=user.displayName||'Creator';sessionStorage.setItem('venomPreviewName',displayName);sessionStorage.setItem('venomPreviewEmail',user.email||'');},error=>{document.body.style.visibility='hidden';location.replace('login.html?error=verify');});
+setTimeout(()=>{if(!venomAuthVerified){document.body.style.visibility='hidden';location.replace('login.html?error=timeout');}},10000);
 </script>
 <script>
 const $=id=>document.getElementById(id);
