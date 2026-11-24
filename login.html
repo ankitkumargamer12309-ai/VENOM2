@@ -13,7 +13,8 @@ a{color:var(--green);text-decoration:none}.wrap{width:min(440px,100%)}.brand{tex
 <section class="card"><h1>Welcome back</h1><p class="muted">Sign in to your creator workspace.</p>
 <form id="loginForm"><label class="field" for="name">Your name</label><input id="name" name="name" autocomplete="name" placeholder="Enter your name" required>
 <label class="field" for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
-<button type="submit">CONTINUE TO CLIPPING</button></form>
+<label class="field" for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" minlength="6" placeholder="At least 6 characters" required>
+<button type="submit">LOG IN</button><button class="secondary" type="button" id="signup">CREATE ACCOUNT / SIGN UP</button></form>
 <div class="divider">OR</div>
 <button class="secondary" type="button" id="google">CONTINUE WITH GOOGLE</button>
 <div class="notice" id="authNotice">Google sign-in is connected to Firebase. If sign-in is blocked, enable Google in Firebase Authentication and add your GitHub Pages domain to Authorized domains.</div>
@@ -23,38 +24,11 @@ a{color:var(--green);text-decoration:none}.wrap{width:min(440px,100%)}.brand{tex
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyCWCJZFunXdRnlm4bLq2ej5UzP6lQbiH10",
-  authDomain: "venom2-7c8b1.firebaseapp.com",
-  projectId: "venom2-7c8b1",
-  storageBucket: "venom2-7c8b1.firebasestorage.app",
-  messagingSenderId: "535035712374",
-  appId: "1:535035712374:web:977d9f01d956b745ce6057",
-  measurementId: "G-PR8943TTZ3"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-document.getElementById('loginForm').addEventListener('submit',function(e){e.preventDefault();const name=document.getElementById('name').value.trim();const email=document.getElementById('email').value.trim();if(!name||!email)return;sessionStorage.setItem('venomPreviewName',name);sessionStorage.setItem('venomPreviewEmail',email);location.href='dashboard.html';});
-document.getElementById('google').addEventListener('click',async function(){
- const button=this, notice=document.getElementById('authNotice');
- button.disabled=true;button.textContent='CONNECTING TO GOOGLE…';notice.textContent='Opening Google sign-in…';
- try{
-  const provider=new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({prompt:'select_account'});
-  const result=await auth.signInWithPopup(provider);
-  const user=result.user;
-  sessionStorage.setItem('venomPreviewName',user.displayName||'Creator');
-  sessionStorage.setItem('venomPreviewEmail',user.email||'');
-  location.href='dashboard.html';
- }catch(error){
-  console.error('Firebase Google sign-in:',error);
-  const messages={
-   'auth/operation-not-allowed':'Google provider is not enabled yet. Enable it in Firebase Authentication → Sign-in method → Google.',
-   'auth/unauthorized-domain':'Add ankitkumargamer12309-ai.github.io in Firebase Authentication → Settings → Authorized domains.',
-   'auth/popup-blocked':'Your browser blocked the sign-in popup. Allow popups for this site and try again.',
-   'auth/popup-closed-by-user':'The Google sign-in window was closed before finishing.'
-  };
-  notice.textContent=messages[error.code]||('Google sign-in could not start: '+(error.message||error.code));
- }finally{button.disabled=false;button.textContent='CONTINUE WITH GOOGLE';}
-});
+const firebaseConfig={apiKey:"AIzaSyCWCJZFunXdRnlm4bLq2ej5UzP6lQbiH10",authDomain:"venom2-7c8b1.firebaseapp.com",projectId:"venom2-7c8b1",storageBucket:"venom2-7c8b1.firebasestorage.app",messagingSenderId:"535035712374",appId:"1:535035712374:web:977d9f01d956b745ce6057",measurementId:"G-PR8943TTZ3"};firebase.initializeApp(firebaseConfig);const auth=firebase.auth();
+const notice=document.getElementById('authNotice');
+auth.onAuthStateChanged(user=>{if(user)location.replace('dashboard.html');});
+function showAuthError(error){const map={'auth/operation-not-allowed':'Email/password sign-in Firebase mein enable nahi hai. Authentication → Sign-in method mein Email/Password enable karo.','auth/weak-password':'Password kam se kam 6 characters ka hona chahiye.','auth/email-already-in-use':'Is email ka account pehle se hai. LOG IN dabao.','auth/invalid-credential':'Email ya password sahi nahi hai.','auth/invalid-email':'Valid email address enter karo.'};notice.textContent=map[error.code]||('Authentication error: '+(error.message||error.code));}
+document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;const btn=e.submitter;btn.disabled=true;btn.textContent='LOGGING IN…';notice.textContent='Checking your account…';try{await auth.signInWithEmailAndPassword(email,password);location.replace('dashboard.html');}catch(error){showAuthError(error);}finally{btn.disabled=false;btn.textContent='LOG IN';}});
+document.getElementById('signup').addEventListener('click',async()=>{const name=document.getElementById('name').value.trim(),email=document.getElementById('email').value.trim(),password=document.getElementById('password').value,btn=document.getElementById('signup');if(!name){notice.textContent='Sign-up ke liye apna naam enter karo.';return;}if(password.length<6){notice.textContent='Password kam se kam 6 characters ka hona chahiye.';return;}btn.disabled=true;btn.textContent='CREATING ACCOUNT…';try{const result=await auth.createUserWithEmailAndPassword(email,password);await result.user.updateProfile({displayName:name});location.replace('dashboard.html');}catch(error){showAuthError(error);}finally{btn.disabled=false;btn.textContent='CREATE ACCOUNT / SIGN UP';}});
+document.getElementById('google').addEventListener('click',async function(){const button=this;button.disabled=true;button.textContent='CONNECTING TO GOOGLE…';notice.textContent='Opening Google sign-in…';try{const provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({prompt:'select_account'});await auth.signInWithPopup(provider);location.replace('dashboard.html');}catch(error){console.error('Firebase Google sign-in:',error);const messages={'auth/operation-not-allowed':'Google provider Firebase Authentication mein enable karo.','auth/unauthorized-domain':'Firebase Authorized domains mein ankitkumargamer12309-ai.github.io add karo.','auth/popup-blocked':'Browser mein popups allow karo.','auth/popup-closed-by-user':'Google sign-in window close ho gayi.'};notice.textContent=messages[error.code]||('Google sign-in error: '+(error.message||error.code));}finally{button.disabled=false;button.textContent='CONTINUE WITH GOOGLE';}});
 </script></body></html>
