@@ -86,8 +86,10 @@ auth.onAuthStateChanged(user=>{if(!user){location.replace('login.html');return;}
 <script>
 const $=id=>document.getElementById(id);
 const navButtons=[...document.querySelectorAll('[data-page]')];
-function showPage(page){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));const target=$('page-'+page);if(target)target.classList.add('active');navButtons.forEach(b=>b.classList.toggle('active',b.dataset.page===page));$('sidebar').classList.remove('open');window.scrollTo(0,0);}
+function showPage(page){const valid=['dashboard','clipping','projects','history','orders','ai','captions','profile','settings'];if(!valid.includes(page))page='dashboard';document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));const target=$('page-'+page);if(target)target.classList.add('active');navButtons.forEach(b=>b.classList.toggle('active',b.dataset.page===page));$('sidebar').classList.remove('open');if(location.hash!=='#'+page)history.replaceState(null,'','#'+page);window.scrollTo(0,0);}
 navButtons.forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+window.addEventListener('hashchange',()=>showPage(location.hash.slice(1)));
+showPage(location.hash.slice(1)||'dashboard');
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.go)));
 $('menuToggle').addEventListener('click',()=>$('sidebar').classList.toggle('open'));
 $('logout').addEventListener('click',async()=>{try{await auth.signOut();location.replace('login.html');}catch(e){alert('Logout nahi ho paya. Dobara try karo.');}});
