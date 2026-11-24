@@ -3,36 +3,63 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>VENOM 2 — AI Clipper</title>
+<meta name="theme-color" content="#090607">
+<meta name="description" content="VENOM CLIPPER — AI-assisted video clipping workspace for creators.">
+<title>VENOM CLIPPER — AI Video Clipping</title>
 <style>
-:root{color-scheme:dark;--bg:#050807;--panel:#0b1410;--green:#39ff88;--muted:#9aa9a0}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#123322 0%,#050807 48%);color:#f4fff8;font-family:Arial,Helvetica,sans-serif;display:grid;place-items:center;padding:24px}
-main{width:min(900px,100%);text-align:center}.logo{width:92px;height:92px;border:1px solid #39ff8866;border-radius:24px;display:grid;place-items:center;margin:0 auto 24px;color:var(--green);font-size:40px;font-weight:900;box-shadow:0 0 36px #39ff8822}
-.tag{color:var(--green);letter-spacing:5px;font-size:12px;font-weight:700}.title{font-size:clamp(42px,9vw,86px);font-weight:900;letter-spacing:-4px;margin:14px 0}.title span{color:var(--green);text-shadow:0 0 28px #39ff8855}
-.sub{color:var(--muted);font-size:17px;line-height:1.7;max-width:590px;margin:0 auto 32px}
-.panel{max-width:620px;margin:auto;padding:26px;background:#0b1410cc;border:1px solid #39ff8833;border-radius:20px;box-shadow:0 18px 70px #0008}
-button{background:var(--green);color:#041009;border:0;border-radius:10px;padding:15px 28px;font-weight:900;font-size:15px;cursor:pointer}button:hover{filter:brightness(1.08);box-shadow:0 0 24px #39ff8855}
-.note{font-size:12px;color:#718178;margin-top:24px}
+:root{color-scheme:dark;--bg:#090607;--panel:#140b0d;--red:#b5122a;--bright:#ef233c;--muted:#b7a6aa;--line:#54202a}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 8%,#3b0b16 0%,#16090d 34%,#090607 72%);color:#fff7f8;font-family:Inter,Arial,Helvetica,sans-serif}
+a{color:inherit;text-decoration:none}
+.page{min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+nav{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:25px 0;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1.5px}
+.mark{width:38px;height:38px;display:grid;place-items:center;border:1px solid #ef233c88;border-radius:11px;color:#ff4058;font-size:20px;font-weight:1000;box-shadow:0 0 25px #ef233c25}
+.made{font-size:11px;color:#c7aeb3;letter-spacing:1.4px}.made b{color:#ff5268;font-weight:700}
+main{width:min(1120px,calc(100% - 40px));margin:auto;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:55px;padding:58px 0 80px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#ff5268;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:#ef233c;box-shadow:0 0 12px #ef233c}
+h1{font-size:clamp(48px,7vw,88px);line-height:.96;letter-spacing:-5px;margin:22px 0 20px;font-weight:1000}
+h1 span{color:#ef233c;text-shadow:0 0 35px #ef233c55}
+.intro{max-width:590px;color:var(--muted);font-size:16px;line-height:1.85;margin:0 0 30px}
+.actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:16px 24px;border-radius:10px;background:linear-gradient(135deg,#ed233d,#a90e28);color:white;font-size:13px;font-weight:900;letter-spacing:1px;box-shadow:0 10px 35px #c4153038;transition:.2s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 38px #ef233c55}
+.hint{font-size:12px;color:#8f7d82}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.feature{min-height:150px;padding:22px;background:linear-gradient(145deg,#1b0d11dd,#10090b);border:1px solid #63202e88;border-radius:17px;box-shadow:0 18px 55px #0005}
+.feature:nth-child(2),.feature:nth-child(4){transform:translateY(20px)}
+.ico{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#3a101a;color:#ff5268;font-size:18px;margin-bottom:17px}
+.feature h3{font-size:14px;margin:0 0 8px}.feature p{font-size:12px;line-height:1.6;color:#aa989d;margin:0}
+footer{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:18px 0 25px;border-top:1px solid #4a2028;color:#806d72;font-size:11px;letter-spacing:1.2px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:760px){main{grid-template-columns:1fr;gap:42px;padding:48px 0 65px}h1{letter-spacing:-3px}.feature{min-height:138px}.feature:nth-child(2),.feature:nth-child(4){transform:none}}
+@media(max-width:420px){nav,main,footer{width:calc(100% - 30px)}.made{font-size:9px}.features{gap:9px}.feature{padding:16px}.feature p{font-size:11px}}
 </style>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script>
-const firebaseConfig={apiKey:"AIzaSyCWCJZFunXdRnlm4bLq2ej5UzP6lQbiH10",authDomain:"venom2-7c8b1.firebaseapp.com",projectId:"venom2-7c8b1",storageBucket:"venom2-7c8b1.firebasestorage.app",messagingSenderId:"535035712374",appId:"1:535035712374:web:977d9f01d956b745ce6057",measurementId:"G-PR8943TTZ3"};
-try{firebase.initializeApp(firebaseConfig);firebase.auth().onAuthStateChanged(user=>{location.replace(user?'dashboard.html':'login.html');},()=>location.replace('login.html'));}catch(e){location.replace('login.html');}
-</script>
 </head>
 <body>
+<div class="page">
+<nav>
+  <a class="brand" href="index.html"><span class="mark">V</span><span>VENOM <span style="color:#ef233c">CLIPPER</span></span></a>
+  <div class="made">MADE BY <b>@halcyon_011</b></div>
+</nav>
 <main>
-<div class="logo">V</div>
-<div class="tag">NEXT-GEN VIDEO CLIPPING</div>
-<h1 class="title">VENOM <span>2</span></h1>
-<p class="sub">Turn long videos into short-form content. Your clipping workspace starts here.</p>
-<section class="panel">
-<h2>Welcome to VENOM 2</h2>
-<p class="sub" style="font-size:14px;margin-bottom:22px">Sign in to enter your clipping workspace. Upload a video and explore the creator tools.</p>
-<button onclick="location.href='login.html'">SIGN IN TO START</button>
-</section>
-<div class="note">MADE FOR CREATORS · VENOM 2</div>
+  <section>
+    <div class="eyebrow"><span class="dot"></span> AI-POWERED CREATOR WORKSPACE</div>
+    <h1>YOUR VIDEO.<br><span>YOUR MOMENT.</span></h1>
+    <p class="intro">Turn long videos into engaging short clips with an AI-assisted clipping workflow. Organize your projects, work with captions, choose video durations, and create facecam-style content — all from one creator workspace.</p>
+    <div class="actions">
+      <a class="cta" href="login.html">GET STARTED <span aria-hidden="true">→</span></a>
+      <span class="hint">Sign in to access your workspace</span>
+    </div>
+  </section>
+  <section class="features" aria-label="Creator tools">
+    <article class="feature"><div class="ico">✂</div><h3>Smart Clipping</h3><p>Prepare short-form clips from your video projects.</p></article>
+    <article class="feature"><div class="ico">✦</div><h3>AI Tools</h3><p>AI-assisted workflow tools for your content process.</p></article>
+    <article class="feature"><div class="ico">CC</div><h3>Captions</h3><p>Work with captions and subtitle-ready content.</p></article>
+    <article class="feature"><div class="ico">◉</div><h3>Facecam & Formats</h3><p>Plan facecam layouts and choose clip durations.</p></article>
+  </section>
 </main>
+<footer><span>VENOM CLIPPER</span><span>BUILT FOR THE NEXT CUT</span></footer>
+</div>
 </body>
 </html>
